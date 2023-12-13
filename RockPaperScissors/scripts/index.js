@@ -3,13 +3,8 @@ let PLAYER_WINS_COUNT = 0;
 let COMPUTER_WINS_COUNT = 0;
 
 const getComputerChoice = () => {
-
     const randomIndex = Math.floor(Math.random() * choices.length);
     return choices[randomIndex];
-}
-const getUserChoice = () => {
-    const userChoice = prompt("Enter your choice (rock, paper, or scissors):");
-    return userChoice;
 }
 
 const playRound = (playerSelection, computerSelection) => {
@@ -35,14 +30,31 @@ const playRound = (playerSelection, computerSelection) => {
         ++COMPUTER_WINS_COUNT;
         return "You Lose! " + computerSelection + " beats " + playerSelection + ".";
     }
-
 }
-const game = () => {
-    for (let i = 0; i < 5; i++) {
-        console.log(playRound(getUserChoice(), getComputerChoice()));
-        console.log("Player wins : " + PLAYER_WINS_COUNT);
-        console.log("Computer wins : " + COMPUTER_WINS_COUNT);
+
+const playGame = (userChoice) => {
+    if (PLAYER_WINS_COUNT === 5 || COMPUTER_WINS_COUNT === 5) {
+        const winner = PLAYER_WINS_COUNT === 5 ? 'Player' : 'Computer';
+        alert(`${winner} wins the game!`);
+        resetGame();
+    } else {
+        const computerChoice = getComputerChoice();
+        const result = playRound(userChoice, computerChoice);
+
+        // Get the results div
+        const resultsDiv = document.getElementById('results');
+
+        // Update the content of the results div
+        resultsDiv.innerHTML = `<p>${result}</p>
+                                <p>Player wins: ${PLAYER_WINS_COUNT}</p>
+                                <p>Computer wins: ${COMPUTER_WINS_COUNT}</p>`;
     }
 }
 
-game();
+const resetGame = () => {
+    PLAYER_WINS_COUNT = 0;
+    COMPUTER_WINS_COUNT = 0;
+
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = '';
+}
